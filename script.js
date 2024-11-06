@@ -385,7 +385,7 @@ const questions = [
     "e) Segurado e assistido."
   ],
   correctAnswer: "B"
-}
+},
 
 
 
