@@ -387,21 +387,26 @@ const questions = [
   correctAnswer: "B"
 },
 
-
-
-
-];
-
-
-
-  // Continue com as outras perguntas...
+const questions = [
+  {
+    question: "36. É correto afirmar que existem 2 tipos de período de cobertura quando estamos falando sobre seguro de pessoas:",
+    options: [
+      "a) Período de Cobertura Provisório e Permanente",
+      "b) Período de Cobertura Contínuo e Temporário",
+      "c) Período de Cobertura Temporário e Vitalício",
+      "d) Período de Cobertura Crescente e Provisório",
+      "e) Período de Cobertura Provisório e Temporário"
+    ],
+    correctAnswer: "C",
+  },
+  
+  // Outras perguntas continuam...
 ];
 
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
 let isAnswered = false;
 
-// Função para carregar a pergunta e opções
 function loadQuestion() {
   const questionTitle = document.getElementById("question");
   const options = document.querySelectorAll(".option label");
@@ -410,100 +415,90 @@ function loadQuestion() {
   questionTitle.textContent = currentQuestion.question;
 
   options.forEach((option, index) => {
-      option.textContent = currentQuestion.options[index];
-      option.style.backgroundColor = '#f0f4f8'; // Reseta o estilo de todas opções
+    option.textContent = currentQuestion.options[index];
+    option.className = 'option-label'; // Usar classes CSS para definir estilo
   });
 
+  resetInputs();
+  updateProgressBar();
+}
+
+function resetInputs() {
   document.querySelectorAll('input[name="answer"]').forEach(input => {
-      input.checked = false;
-      input.disabled = false; // Habilita novamente os inputs
+    input.checked = false;
+    input.disabled = false;
   });
 
   const feedback = document.getElementById("feedback");
   feedback.textContent = "";
   feedback.classList.remove("correct", "incorrect");
-
-  document.getElementById("next-btn").disabled = true; // Desabilita o botão 'Próxima' até o usuário responder
+  document.getElementById("next-btn").disabled = true;
   isAnswered = false;
-
-  updateProgressBar();
 }
 
-// Função para verificar a resposta
 function checkAnswer() {
   const selectedOption = document.querySelector('input[name="answer"]:checked');
   const feedback = document.getElementById("feedback");
   const labels = document.querySelectorAll(".option label");
 
-  if (!selectedOption || isAnswered) {
-      return; // Sai da função se nenhuma opção foi selecionada ou já foi respondido
-  }
+  if (!selectedOption || isAnswered) return;
 
   const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+  isAnswered = true;
 
   if (selectedOption.value === correctAnswer) {
-      feedback.textContent = "Correto!";
-      feedback.classList.add("correct");
-      correctAnswers++;
-      labels.forEach(label => {
-          if (label.htmlFor === `option${correctAnswer}`) {
-              label.style.backgroundColor = 'lightgreen'; // Destaca a resposta correta
-          }
-      });
+    feedback.textContent = "Correto!";
+    feedback.classList.add("correct");
+    correctAnswers++;
   } else {
-      feedback.textContent = `Incorreto! A resposta correta é: ${correctAnswer}.`;
-      feedback.classList.add("incorrect");
-      labels.forEach(label => {
-          if (label.htmlFor === `option${correctAnswer}`) {
-              label.style.backgroundColor = 'lightgreen'; // Destaca a resposta correta
-          }
-          if (label.htmlFor === selectedOption.id) {
-              label.style.backgroundColor = 'lightcoral'; // Marca a incorreta
-          }
-      });
+    feedback.textContent = `Incorreto! A resposta correta é: ${correctAnswer}.`;
+    feedback.classList.add("incorrect");
   }
 
-  isAnswered = true; // Evita múltiplas respostas para a mesma pergunta
-
-  // Desabilita as opções após a seleção
-  document.querySelectorAll('input[name="answer"]').forEach(input => {
-      input.disabled = true;
-  });
-
-  // Habilita o botão "Próxima"
+  highlightAnswers(labels, correctAnswer, selectedOption.id);
   document.getElementById("next-btn").disabled = false;
 }
 
-// Função para avançar para a próxima pergunta
+function highlightAnswers(labels, correctAnswer, selectedId) {
+  labels.forEach(label => {
+    if (label.htmlFor === `option${correctAnswer}`) {
+      label.classList.add("correct-answer");
+    }
+    if (label.htmlFor === selectedId) {
+      label.classList.add("wrong-answer");
+    }
+  });
+
+  document.querySelectorAll('input[name="answer"]').forEach(input => {
+    input.disabled = true;
+  });
+}
+
 function nextQuestion() {
   currentQuestionIndex++;
 
   if (currentQuestionIndex < questions.length) {
-      loadQuestion();
+    loadQuestion();
   } else {
-      const feedback = document.getElementById("feedback");
-      feedback.textContent = `Finalizado! Você acertou ${correctAnswers} de ${questions.length}.`;
-      document.getElementById("next-btn").disabled = true; // Desabilita botão ao final
+    const feedback = document.getElementById("feedback");
+    feedback.textContent = `Finalizado! Você acertou ${correctAnswers} de ${questions.length}.`;
+    document.getElementById("next-btn").disabled = true;
   }
 }
 
-// Atualiza a barra de progresso
 function updateProgressBar() {
   const progressBar = document.getElementById("progress-bar");
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
   progressBar.style.width = `${progress}%`;
 }
 
-// Carrega a primeira pergunta quando a página é carregada
 window.onload = function() {
   loadQuestion();
-  document.getElementById("next-btn").disabled = true; // Desabilita até que o usuário selecione uma resposta
+  document.getElementById("next-btn").disabled = true;
 };
 
-// Evento de clique nas opções
 document.querySelectorAll('input[name="answer"]').forEach(input => {
   input.addEventListener("change", checkAnswer);
 });
 
-// Evento de clique no botão "Próxima"
 document.getElementById("next-btn").addEventListener("click", nextQuestion);
