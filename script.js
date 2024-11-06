@@ -394,6 +394,9 @@ const questions = [
 
 
 
+  // Continue com as outras perguntas...
+];
+
 let currentQuestionIndex = 0;
 let correctAnswers = 0;
 let isAnswered = false;
