@@ -386,77 +386,7 @@ const questions = [
   ],
   correctAnswer: "B"
 },
-
   // Continue com as outras perguntas...
-];
-
-let currentQuestionIndex = 0;
-let correctAnswers = 0;
-let isAnswered = false;
-
-// Função para carregar a pergunta e opções
-function loadQuestion() {
-  const questionTitle = document.getElementById("question");
-  const options = document.querySelectorAll(".option label");
-
-  const currentQuestion = questions[currentQuestionIndex];
-  questionTitle.textContent = currentQuestion.question;
-
-  options.forEach((option, index) => {
-      option.textContent = currentQuestion.options[index];
-      option.style.backgroundColor = '#f0f4f8'; // Reseta o estilo de todas opções
-  });
-
-  document.querySelectorAll('input[name="answer"]').forEach(input => {
-      input.checked = false;
-      input.disabled = false; // Habilita novamente os inputs
-  });
-
-  const feedback = document.getElementById("feedback");
-  feedback.textContent = "";
-  feedback.classList.remove("correct", "incorrect");
-
-  document.getElementById("next-btn").disabled = true; // Desabilita o botão 'Próxima' até o usuário responder
-  isAnswered = false;
-
-  updateProgressBar();
-}
-
-// Função para verificar a resposta
-function checkAnswer() {
-  const selectedOption = document.querySelector('input[name="answer"]:checked');
-  const feedback = document.getElementById("feedback");
-  const labels = document.querySelectorAll(".option label");
-
-  if (!selectedOption || isAnswered) {
-      return; // Sai da função se nenhuma opção foi selecionada ou já foi respondido
-  }
-
-  const correctAnswer = questions[currentQuestionIndex].correctAnswer;
-
-  if (selectedOption.value === correctAnswer) {
-      feedback.textContent = "Correto!";
-      feedback.classList.add("correct");
-      correctAnswers++;
-      labels.forEach(label => {
-          if (label.htmlFor === `option${correctAnswer}`) {
-              label.style.backgroundColor = 'lightgreen'; // Destaca a resposta correta
-          }
-      });
-  } else {
-      feedback.textContent = `Incorreto! A resposta correta é: ${correctAnswer}.`;
-      feedback.classList.add("incorrect");
-      labels.forEach(label => {
-          if (label.htmlFor === `option${correctAnswer}`) {
-              label.style.backgroundColor = 'lightgreen'; // Destaca a resposta correta
-          }
-          if (label.htmlFor === selectedOption.id) {
-              label.style.backgroundColor = 'lightcoral'; // Marca a incorreta
-          }
-      });
-  },
-
-   // Continue com as outras perguntas...
 ];
 
 let currentQuestionIndex = 0;
