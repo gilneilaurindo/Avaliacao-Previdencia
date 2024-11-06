@@ -387,7 +387,6 @@ const questions = [
   correctAnswer: "B"
 },
 
-
   // Continue com as outras perguntas...
 ];
 
@@ -455,7 +454,7 @@ function checkAnswer() {
               label.style.backgroundColor = 'lightcoral'; // Marca a incorreta
           }
       });
-  }
+  },
 
    // Continue com as outras perguntas...
 ];
