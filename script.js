@@ -362,7 +362,7 @@ const questions = [
     "d) Período de diferimento de benefício.",
     "e) Período de cobertura."
   ],
-  correctAnswer: "a"
+  correctAnswer: "A"
 },
 {
   question: "34. Um cliente está em dúvida entre contratar um PGBL e um VGBL. Um dos pontos que definirá o melhor produto para ele é:",
