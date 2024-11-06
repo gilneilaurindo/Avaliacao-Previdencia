@@ -387,105 +387,36 @@ const questions = [
   correctAnswer: "B"
 },
 
-// Outras perguntas continuam...
-];
-
-let currentQuestionIndex = 0;
-let correctAnswers = 0;
-let isAnswered = false;
-
-function loadQuestion() {
-  const questionTitle = document.getElementById("question");
-  const options = document.querySelectorAll(".option label");
-
-  const currentQuestion = questions[currentQuestionIndex];
-  questionTitle.textContent = currentQuestion.question;
-
-  options.forEach((option, index) => {
-    option.textContent = currentQuestion.options[index];
-    option.className = 'option-label'; // Usar classes CSS para definir estilo
-  });
-
-  resetInputs();
-  updateProgressBar();
-}
-
-function resetInputs() {
-  document.querySelectorAll('input[name="answer"]').forEach(input => {
-    input.checked = false;
-    input.disabled = false;
-  });
-
-  const feedback = document.getElementById("feedback");
-  feedback.textContent = "";
-  feedback.classList.remove("correct", "incorrect");
-  document.getElementById("next-btn").disabled = true;
-  isAnswered = false;
-}
-
-function checkAnswer() {
-  const selectedOption = document.querySelector('input[name="answer"]:checked');
-  const feedback = document.getElementById("feedback");
-  const labels = document.querySelectorAll(".option label");
-
-  if (!selectedOption || isAnswered) return;
-
-  const correctAnswer = questions[currentQuestionIndex].correctAnswer;
-  isAnswered = true;
-
-  if (selectedOption.value === correctAnswer) {
-    feedback.textContent = "Correto!";
-    feedback.classList.add("correct");
-    correctAnswers++;
-  } else {
-    feedback.textContent = `Incorreto! A resposta correta é: ${correctAnswer}.`;
-    feedback.classList.add("incorrect");
-  }
-
-  highlightAnswers(labels, correctAnswer, selectedOption.id);
-  document.getElementById("next-btn").disabled = false;
-}
-
-function highlightAnswers(labels, correctAnswer, selectedId) {
-  labels.forEach(label => {
-    if (label.htmlFor === `option${correctAnswer}`) {
-      label.classList.add("correct-answer");
-    }
-    if (label.htmlFor === selectedId) {
-      label.classList.add("wrong-answer");
-    }
-  });
-
-  document.querySelectorAll('input[name="answer"]').forEach(input => {
-    input.disabled = true;
-  });
-}
-
+/ Função para avançar para a próxima pergunta
 function nextQuestion() {
   currentQuestionIndex++;
 
   if (currentQuestionIndex < questions.length) {
-    loadQuestion();
+      loadQuestion();
   } else {
-    const feedback = document.getElementById("feedback");
-    feedback.textContent = `Finalizado! Você acertou ${correctAnswers} de ${questions.length}.`;
-    document.getElementById("next-btn").disabled = true;
+      const feedback = document.getElementById("feedback");
+      feedback.textContent = `Finalizado! Você acertou ${correctAnswers} de ${questions.length}.`;
+      document.getElementById("next-btn").disabled = true; // Desabilita botão ao final
   }
 }
 
+// Atualiza a barra de progresso
 function updateProgressBar() {
   const progressBar = document.getElementById("progress-bar");
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
   progressBar.style.width = `${progress}%`;
 }
 
+// Carrega a primeira pergunta quando a página é carregada
 window.onload = function() {
   loadQuestion();
-  document.getElementById("next-btn").disabled = true;
+  document.getElementById("next-btn").disabled = true; // Desabilita até que o usuário selecione uma resposta
 };
 
+// Evento de clique nas opções
 document.querySelectorAll('input[name="answer"]').forEach(input => {
   input.addEventListener("change", checkAnswer);
 });
 
+// Evento de clique no botão "Próxima"
 document.getElementById("next-btn").addEventListener("click", nextQuestion);
