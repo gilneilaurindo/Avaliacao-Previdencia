@@ -387,20 +387,7 @@ const questions = [
   correctAnswer: "B"
 },
 
-const questions = [
-  {
-    question: "36. É correto afirmar que existem 2 tipos de período de cobertura quando estamos falando sobre seguro de pessoas:",
-    options: [
-      "a) Período de Cobertura Provisório e Permanente",
-      "b) Período de Cobertura Contínuo e Temporário",
-      "c) Período de Cobertura Temporário e Vitalício",
-      "d) Período de Cobertura Crescente e Provisório",
-      "e) Período de Cobertura Provisório e Temporário"
-    ],
-    correctAnswer: "C",
-  },
-  
-  // Outras perguntas continuam...
+// Outras perguntas continuam...
 ];
 
 let currentQuestionIndex = 0;
